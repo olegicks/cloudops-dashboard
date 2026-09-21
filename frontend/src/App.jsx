@@ -10,8 +10,8 @@ function App() {
     version: '...' 
   })
 
-  const API_URL = "http://68.210.228.88/api/status"
-
+  const API_URL = ""
+  
   const fetchStatus = async () => {
     try {
       const response = await fetch(`${API_URL}/api/status`)
