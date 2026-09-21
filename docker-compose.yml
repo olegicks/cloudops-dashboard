@@ -1,12 +1,8 @@
-version: '3.8'
-
 services:
   api:
     build: ./backend
-    container_name: cloudops_api
     ports:
-      - "8000:8000"
+      - "80:8000"
     restart: unless-stopped
-    environment:
-      - ADMIN_TOKEN=demo-secret-123
-      - APP_VERSION=v1.0.0
+    env_file:
+      - ./backend/.env

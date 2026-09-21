@@ -29,15 +29,23 @@ function App() {
     return () => clearInterval(interval)
   }, [])
 
-  const simulateFailure = async () => {
+const simulateFailure = async () => {
+    const token = prompt("Enter Admin Token to simulate failure:");
+    if (!token) return;
+
     try {
       setData(prev => ({ ...prev, status: '🔴 OFFLINE' }))
-      await fetch(`${API_URL}/api/simulate-failure`, {
+      const response = await fetch(`${API_URL}/api/simulate-failure`, {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer demo-secret-123'
+          'Authorization': `Bearer ${token}`
         }
       })
+      
+      if (!response.ok) {
+        alert("Wrong Admin Token!");
+        fetchStatus();
+      }
     } catch (error) {
       console.log("Server killed successfully")
     }
