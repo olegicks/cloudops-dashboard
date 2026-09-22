@@ -55,7 +55,13 @@ function App() {
     }
   }
 
-  const isOnline = data.status === 'ONLINE'
+  const getStatusClass = () => {
+    if (data.status === 'ONLINE') return 'online'
+    if (data.status === 'OFFLINE') return 'offline'
+    return 'connecting'
+  }
+
+  const statusClass = getStatusClass()
 
   return (
     <main className="app">
@@ -63,7 +69,7 @@ function App() {
 
         <header className="header">
           <div>
-            <p className="eyebrow">INFRASTRUCTURE MONITORING</p>
+            <div className="eyebrow">INFRASTRUCTURE MONITORING</div>
             <h1>CloudOps Dashboard</h1>
           </div>
 
@@ -74,16 +80,18 @@ function App() {
         </header>
 
         <section className="status-section">
+
           <div className="status-header">
             <span className="section-label">SYSTEM STATUS</span>
 
-            <div className={`status ${isOnline ? 'online' : 'offline'}`}>
+            <div className={`status ${statusClass}`}>
               <span className="status-dot"></span>
               {data.status}
             </div>
           </div>
 
           <div className="status-details">
+
             <div className="info-block">
               <span className="label">ENVIRONMENT</span>
               <span className="value">{data.environment}</span>
@@ -98,10 +106,12 @@ function App() {
               <span className="label">VERSION</span>
               <span className="value">{data.version}</span>
             </div>
+
           </div>
         </section>
 
         <section className="metrics-section">
+
           <div className="section-label">SYSTEM METRICS</div>
 
           <div className="metrics-grid">
@@ -110,7 +120,7 @@ function App() {
               <span className="label">UPTIME</span>
               <span className="metric-value">
                 {data.uptime_seconds}
-                <span className="metric-unit"> sec</span>
+                <span className="metric-unit">sec</span>
               </span>
             </div>
 
@@ -118,7 +128,7 @@ function App() {
               <span className="label">CPU LOAD</span>
               <span className="metric-value">
                 {data.cpu_percent}
-                <span className="metric-unit"> %</span>
+                <span className="metric-unit">%</span>
               </span>
             </div>
 
@@ -126,7 +136,7 @@ function App() {
               <span className="label">MEMORY USED</span>
               <span className="metric-value">
                 {data.ram_mb}
-                <span className="metric-unit"> MB</span>
+                <span className="metric-unit">MB</span>
               </span>
             </div>
 
@@ -134,8 +144,10 @@ function App() {
         </section>
 
         <section className="actions-section">
+
           <div>
             <div className="section-label">OPERATIONS</div>
+
             <p className="action-description">
               Trigger a controlled application failure to test automatic recovery.
             </p>
@@ -147,11 +159,12 @@ function App() {
           >
             Simulate Failure
           </button>
+
         </section>
 
         <footer className="footer">
-          <span>CloudOps</span>
-          <span>Monitoring & Recovery</span>
+          <span>CLOUDOPS</span>
+          <span>MONITORING / RECOVERY</span>
         </footer>
 
       </div>
