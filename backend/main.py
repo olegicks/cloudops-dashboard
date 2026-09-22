@@ -30,7 +30,5 @@ def get_status():
     }
 
 @app.post("/api/simulate-failure")
-def simulate_failure(authorization: str = Header(None)):
-    if authorization != f"Bearer {ADMIN_TOKEN}":
-        raise HTTPException(status_code=401, detail="Unauthorized")
+def simulate_failure():
     sys.exit(1)

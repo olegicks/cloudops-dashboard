@@ -29,14 +29,11 @@ function App() {
     return () => clearInterval(interval)
   }, [])
 
-const simulateFailure = async () => {
+  const simulateFailure = async () => {
     try {
       setData(prev => ({ ...prev, status: '🔴 OFFLINE' }))
       await fetch(`${API_URL}/api/simulate-failure`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_DEMO_TOKEN || 'my-secure-demo-2026'}`
-        }
+        method: 'POST'
       })
     } catch (error) {
       console.log("Server killed successfully")
