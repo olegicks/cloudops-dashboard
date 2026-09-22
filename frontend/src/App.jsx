@@ -30,21 +30,23 @@ function App() {
   }, [])
 
 const simulateFailure = async () => {
-    const token = prompt("Enter Admin Token to simulate failure:");
-    if (!token) return;
-
     try {
       setData(prev => ({ ...prev, status: '🔴 OFFLINE' }))
       const response = await fetch(`${API_URL}/api/simulate-failure`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${import.meta.env.VITE_DEMO_TOKEN}`
         }
       })
       
       if (!response.ok) {
-        alert("Wrong Admin Token!");
-        fetchStatus();
+        const token = prompt("Demo mode inactive. Enter Admin Token:");
+        if (token) {
+           await fetch(`${API_URL}/api/simulate-failure`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+        }
       }
     } catch (error) {
       console.log("Server killed successfully")
