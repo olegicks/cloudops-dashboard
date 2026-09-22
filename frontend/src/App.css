@@ -1,343 +1,85 @@
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,sans-serif;color:#17263d;background:#f5f8fc}
+.layout{min-height:100vh;display:flex}
+
+aside{
+  width:220px;padding:30px 20px;display:flex;flex-direction:column;
+  justify-content:space-between;position:fixed;inset:0 auto 0 0;
+  background:#fff;border-right:1px solid #e4ebf3
+}
+.logo{display:flex;align-items:center;gap:12px}
+.logo>span{
+  width:42px;height:42px;display:grid;place-items:center;color:#fff;
+  background:#347fe5;border-radius:12px;font-size:21px
+}
+.logo b,.logo small,.side-status small{display:block}
+.logo b{font-size:17px}.logo small{margin-top:3px;color:#7b8da4;font-size:12px}
+
+.side-status{color:#5d718c;font-size:13px}
+.side-status small{margin-top:12px;color:#94a2b4}
+.dot{width:8px;height:8px;display:inline-block;margin-right:8px;border-radius:50%;background:#e1a331}
+.dot.online{background:#20b77b}.dot.offline{background:#e05260}
+
+main{width:calc(100% - 220px);margin-left:220px;padding:38px}
+main>header,.status,.metrics,.cards{width:100%;max-width:1100px;margin-inline:auto}
+
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+header small{color:#7b8ca3;font-size:10px;font-weight:700;letter-spacing:1.5px}
+h1{margin:6px 0 0;color:#14233b;font-size:30px;letter-spacing:-.7px}
+.live{
+  padding:7px 12px;color:#188d5c;background:#e9f8f1;
+  border-radius:20px;font-size:10px;font-weight:700
 }
 
-body {
-  margin: 0;
-  font-family: Inter, Arial, sans-serif;
-  color: #17263d;
-  background: #f5f8fc;
+.status{
+  display:flex;align-items:center;gap:17px;padding:23px;margin-bottom:18px;
+  background:#ecfbf4;border:1px solid #b8ead3;border-radius:17px
 }
-
-.layout {
-  min-height: 100vh;
-  display: flex;
+.status.offline{background:#fff2f3;border-color:#f0c3c8}
+.status.connecting{background:#fff9ed;border-color:#eeddb2}
+.status-icon{
+  width:50px;height:50px;display:grid;place-items:center;flex:none;
+  color:#fff;background:#20b77b;border-radius:50%;font-size:23px
 }
+.status.offline .status-icon{background:#e05260}
+.status.connecting .status-icon{background:#e1a331}
+.status h2{margin:0;color:#17263d;font-size:22px}
+.status p{margin:4px 0 0;color:#61758f;font-size:13px}
+.status>b{margin-left:auto;color:#168f5d;font-size:12px}
 
-aside {
-  width: 230px;
-  padding: 32px 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: fixed;
-  inset: 0 auto 0 0;
-  background: white;
-  border-right: 1px solid #e7edf5;
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px}
+.metric,.card{
+  background:#fff;border:1px solid #e3eaf2;border-radius:15px;
+  box-shadow:0 5px 20px rgba(40,70,110,.04)
 }
+.metric{padding:20px}
+.metric small{color:#71839b;font-size:12px}
+.metric strong{display:block;margin-top:11px;color:#14233b;font-size:25px}
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{padding:21px}
+.card h2{margin:0 0 14px;color:#172941;font-size:16px}
+.card p{color:#667b95;font-size:13px}
+.row{
+  min-height:44px;display:flex;align-items:center;
+  justify-content:space-between;gap:15px;border-top:1px solid #edf1f5
 }
+.row span{color:#71839b;font-size:12px}
+.row b{color:#253b58;font-size:12px;text-align:right}
 
-.logo > div {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  color: white;
-  background: #3284e8;
-  border-radius: 12px;
+button{
+  padding:10px 14px;color:#bd4150;background:#fff1f3;
+  border:1px solid #efc4ca;border-radius:9px;font-weight:600
 }
+button:hover{background:#ffe6e9}
 
-.logo b,
-.logo small,
-aside footer small {
-  display: block;
+@media(max-width:800px){
+  aside{width:180px}main{width:calc(100% - 180px);margin-left:180px;padding:25px}
+  .metrics,.cards{grid-template-columns:1fr 1fr}
 }
-
-.logo small {
-  margin-top: 3px;
-  color: #8090a6;
-}
-
-aside footer {
-  color: #61748f;
-  font-size: 13px;
-}
-
-aside footer small {
-  margin-top: 14px;
-  color: #9aa8ba;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  display: inline-block;
-  margin-right: 8px;
-  border-radius: 50%;
-  background: #20b77b;
-}
-
-.dot.offline {
-  background: #e05260;
-}
-
-.dot.connecting {
-  background: #e1a331;
-}
-
-main {
-  width: calc(100% - 230px);
-  margin-left: 230px;
-  padding: 40px;
-}
-
-header,
-.status,
-.metrics,
-.cards,
-.bottom {
-  width: 100%;
-  max-width: 1150px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 25px;
-}
-
-header small {
-  color: #8494a9;
-  font-weight: bold;
-  letter-spacing: 1.5px;
-}
-
-h1 {
-  margin: 8px 0;
-  font-size: 38px;
-  letter-spacing: -1px;
-}
-
-header p {
-  margin: 0;
-  color: #71839c;
-}
-
-.time {
-  padding: 12px 18px;
-  color: #657994;
-  background: white;
-  border: 1px solid #e6edf5;
-  border-radius: 12px;
-  font-size: 12px;
-}
-
-.status {
-  min-height: 120px;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 25px;
-  margin-bottom: 20px;
-  background: #edfcf5;
-  border: 1px solid #b9ecd5;
-  border-radius: 18px;
-}
-
-.status.offline {
-  background: #fff2f3;
-  border-color: #f2c3c8;
-}
-
-.status.connecting {
-  background: #fff9ed;
-  border-color: #f0dfb5;
-}
-
-.status-icon {
-  width: 54px;
-  height: 54px;
-  display: grid;
-  flex-shrink: 0;
-  place-items: center;
-  color: white;
-  background: #20b77b;
-  border-radius: 50%;
-  font-size: 25px;
-}
-
-.status.offline .status-icon {
-  background: #e05260;
-}
-
-.status.connecting .status-icon {
-  background: #e1a331;
-}
-
-.status h2 {
-  margin: 0;
-}
-
-.status p {
-  margin: 5px 0 0;
-  color: #71839c;
-}
-
-.status > strong {
-  margin-left: auto;
-  color: #159360;
-}
-
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  margin-bottom: 20px;
-}
-
-.metric,
-.card,
-.bottom {
-  background: white;
-  border: 1px solid #e6edf5;
-  border-radius: 16px;
-  box-shadow: 0 6px 25px rgba(40, 70, 110, 0.04);
-}
-
-.metric {
-  padding: 22px;
-}
-
-.metric small {
-  color: #71839c;
-}
-
-.metric strong {
-  display: block;
-  margin-top: 13px;
-  font-size: 27px;
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-
-.card {
-  padding: 23px;
-}
-
-.card h2 {
-  margin: 0 0 15px;
-  font-size: 17px;
-}
-
-.card > p {
-  color: #71839c;
-  font-size: 13px;
-}
-
-.row {
-  min-height: 47px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  border-top: 1px solid #edf1f5;
-}
-
-.row span {
-  color: #71839c;
-  font-size: 13px;
-}
-
-.row b {
-  color: #263b58;
-  font-size: 13px;
-  text-align: right;
-}
-
-button {
-  padding: 10px 15px;
-  color: #c84452;
-  background: #fff1f3;
-  border: 1px solid #f0c5ca;
-  border-radius: 9px;
-  font-weight: 600;
-}
-
-button:hover {
-  background: #ffe6e9;
-}
-
-.bottom {
-  margin-top: 20px;
-  padding: 20px 23px;
-  display: flex;
-  justify-content: space-between;
-  color: #637995;
-  font-size: 13px;
-}
-
-.bottom span:last-child {
-  font-size: 10px;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-
-@media (max-width: 900px) {
-  aside {
-    width: 180px;
-  }
-
-  main {
-    width: calc(100% - 180px);
-    margin-left: 180px;
-    padding: 25px;
-  }
-
-  .metrics,
-  .cards {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 650px) {
-  .layout {
-    display: block;
-  }
-
-  aside {
-    width: 100%;
-    min-height: auto;
-    position: static;
-  }
-
-  main {
-    width: 100%;
-    margin: 0;
-    padding: 20px;
-  }
-
-  header {
-    display: block;
-  }
-
-  .time {
-    display: inline-block;
-    margin-top: 15px;
-  }
-
-  .metrics,
-  .cards {
-    grid-template-columns: 1fr;
-  }
-
-  .bottom {
-    display: block;
-  }
-
-  .bottom span:last-child {
-    display: block;
-    margin-top: 10px;
-  }
+@media(max-width:600px){
+  .layout{display:block}aside{width:100%;position:static}
+  main{width:100%;margin:0;padding:20px}
+  header{margin-bottom:18px}.metrics,.cards{grid-template-columns:1fr}
+  .status{padding:18px}.status>b{display:none}
 }
