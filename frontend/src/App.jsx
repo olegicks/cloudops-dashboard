@@ -24,36 +24,54 @@ function App() {
   const fetchStatus = async () => {
     try {
       const res = await fetch(`${API}/api/status`)
+
       if (!res.ok) throw new Error()
 
       const result = await res.json()
-      setData(result)
 
       if (data.status === 'OFFLINE') {
-        setEvents(e => ['System back online', ...e])
+        setEvents((e) => ['System back online', ...e])
       }
+
+      setData(result)
     } catch {
-      setData(d => ({ ...d, status: 'OFFLINE' }))
+      setData((d) => ({
+        ...d,
+        status: 'OFFLINE',
+      }))
     }
   }
 
   useEffect(() => {
     fetchStatus()
+
     const timer = setInterval(fetchStatus, 3000)
+
     return () => clearInterval(timer)
   }, [])
 
-  const failure = async () => {
+  const simulateFailure = async () => {
     setEvents(['Failure simulation triggered'])
-    setData(d => ({ ...d, status: 'OFFLINE' }))
+    setData((d) => ({
+      ...d,
+      status: 'OFFLINE',
+    }))
 
     try {
-      await fetch(`${API}/api/simulate-failure`, { method: 'POST' })
+      await fetch(`${API}/api/simulate-failure`, {
+        method: 'POST',
+      })
     } catch {}
   }
 
   const online = data.status === 'ONLINE'
-  const status = online ? 'online' : data.status === 'OFFLINE' ? 'offline' : 'connecting'
+
+  const status =
+    online
+      ? 'online'
+      : data.status === 'OFFLINE'
+        ? 'offline'
+        : 'connecting'
 
   const uptime = `${Math.floor(data.uptime_seconds / 60)}m ${
     data.uptime_seconds % 60
@@ -65,22 +83,17 @@ function App() {
       <aside>
         <div className="logo">
           <div>☁</div>
+
           <section>
             <b>CloudOps</b>
             <small>Dashboard</small>
           </section>
         </div>
 
-        <nav>
-          <a className="active">Overview</a>
-          <a href="#system">System</a>
-          <a href="#cloud">Infrastructure</a>
-          <a href="#operations">Operations</a>
-        </nav>
-
         <footer>
           <span className={`dot ${status}`} />
           {online ? 'All systems operational' : data.status}
+
           <small>{data.version}</small>
         </footer>
       </aside>
@@ -90,21 +103,33 @@ function App() {
         <header>
           <div>
             <small>INFRASTRUCTURE MONITORING</small>
+
             <h1>CloudOps Dashboard</h1>
-            <p>Monitor your infrastructure in real time.</p>
+
+            <p>
+              Monitor your infrastructure in real time.
+            </p>
           </div>
 
-          <div className="time">LIVE MONITORING</div>
+          <div className="time">
+            LIVE MONITORING
+          </div>
         </header>
 
         <section className={`status ${status}`}>
-          <div className="status-icon">{online ? '✓' : '!'}</div>
+          <div className="status-icon">
+            {online ? '✓' : '!'}
+          </div>
+
           <div>
             <h2>
-              {online ? 'System Online' : data.status === 'OFFLINE'
-                ? 'System Offline'
-                : 'Connecting'}
+              {online
+                ? 'System Online'
+                : data.status === 'OFFLINE'
+                  ? 'System Offline'
+                  : 'Connecting'}
             </h2>
+
             <p>
               {online
                 ? 'All services are running normally.'
@@ -112,48 +137,125 @@ function App() {
             </p>
           </div>
 
-          <strong>{online ? 'Healthy' : 'Checking'}</strong>
+          <strong>
+            {online ? 'Healthy' : 'Checking'}
+          </strong>
         </section>
 
         <section className="metrics">
-          <Metric title="CPU Usage" value={`${data.cpu_percent}%`} />
-          <Metric title="RAM Usage" value={`${data.ram_mb} MB`} />
-          <Metric title="Uptime" value={uptime} />
-          <Metric title="Status" value={data.status} />
+
+          <Metric
+            title="CPU Usage"
+            value={`${data.cpu_percent}%`}
+          />
+
+          <Metric
+            title="RAM Usage"
+            value={`${data.ram_mb} MB`}
+          />
+
+          <Metric
+            title="Uptime"
+            value={uptime}
+          />
+
+          <Metric
+            title="Status"
+            value={data.status}
+          />
+
         </section>
 
         <section className="cards">
 
-          <Card title="System Information" id="system">
-            <Row label="Hostname" value={data.hostname} />
-            <Row label="Version" value={data.version} />
-            <Row label="Environment" value={data.environment} />
-            <Row label="Deploy Commit" value={data.deploy_commit} />
-            <Row label="Deploy Time" value={data.deploy_time} />
+          <Card title="System Information">
+
+            <Row
+              label="Hostname"
+              value={data.hostname}
+            />
+
+            <Row
+              label="Version"
+              value={data.version}
+            />
+
+            <Row
+              label="Environment"
+              value={data.environment}
+            />
+
+            <Row
+              label="Deploy Commit"
+              value={data.deploy_commit}
+            />
+
+            <Row
+              label="Deploy Time"
+              value={data.deploy_time}
+            />
+
           </Card>
 
-          <Card title="Cloud Environment" id="cloud">
-            <Row label="Cloud Provider" value={data.cloud_provider} />
-            <Row label="Compute" value={data.cloud_compute} />
-            <Row label="Region" value={data.cloud_region} />
+          <Card title="Cloud Environment">
+
+            <Row
+              label="Cloud Provider"
+              value={data.cloud_provider}
+            />
+
+            <Row
+              label="Compute"
+              value={data.cloud_compute}
+            />
+
+            <Row
+              label="Region"
+              value={data.cloud_region}
+            />
+
           </Card>
 
-          <Card title="Operations" id="operations">
-            <p>Test automatic application recovery.</p>
-            <button onClick={failure}>Simulate Failure</button>
+          <Card title="Operations">
+
+            <p>
+              Test automatic application recovery.
+            </p>
+
+            <button onClick={simulateFailure}>
+              Simulate Failure
+            </button>
+
           </Card>
 
           <Card title="Recovery">
-            {events.length
-              ? events.map((event, i) => <Row key={i} label="Event" value={event} />)
-              : <p>No recovery events in this session.</p>}
+
+            {events.length > 0 ? (
+              events.map((event, index) => (
+                <Row
+                  key={index}
+                  label="Event"
+                  value={event}
+                />
+              ))
+            ) : (
+              <p>
+                No recovery events in this session.
+              </p>
+            )}
+
           </Card>
 
         </section>
 
         <div className="bottom">
-          Reliable infrastructure, clearly monitored.
-          <span>BUILD · MONITOR · IMPROVE</span>
+          <span>
+            Reliable infrastructure, clearly monitored.
+          </span>
+
+          <span>
+            BUILD · MONITOR · IMPROVE
+          </span>
         </div>
 
       </main>
@@ -170,9 +272,9 @@ function Metric({ title, value }) {
   )
 }
 
-function Card({ title, children, id }) {
+function Card({ title, children }) {
   return (
-    <article className="card" id={id}>
+    <article className="card">
       <h2>{title}</h2>
       {children}
     </article>

@@ -20,10 +20,10 @@ aside {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: white;
-  border-right: 1px solid #e7edf5;
   position: fixed;
   inset: 0 auto 0 0;
+  background: white;
+  border-right: 1px solid #e7edf5;
 }
 
 .logo {
@@ -49,27 +49,8 @@ aside footer small {
 }
 
 .logo small {
-  color: #8090a6;
   margin-top: 3px;
-}
-
-nav {
-  margin-top: 45px;
-}
-
-nav a {
-  display: block;
-  padding: 12px 14px;
-  margin: 5px 0;
-  color: #61748f;
-  text-decoration: none;
-  border-radius: 10px;
-}
-
-nav a.active,
-nav a:hover {
-  color: #2679df;
-  background: #edf5ff;
+  color: #8090a6;
 }
 
 aside footer {
@@ -110,15 +91,16 @@ header,
 .metrics,
 .cards,
 .bottom {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 1150px;
   margin-left: auto;
   margin-right: auto;
 }
 
 header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 25px;
 }
 
@@ -131,24 +113,25 @@ header small {
 h1 {
   margin: 8px 0;
   font-size: 38px;
+  letter-spacing: -1px;
 }
 
-header p,
-.status p,
-.card > p {
+header p {
+  margin: 0;
   color: #71839c;
 }
 
 .time {
   padding: 12px 18px;
+  color: #657994;
   background: white;
   border: 1px solid #e6edf5;
   border-radius: 12px;
-  color: #657994;
   font-size: 12px;
 }
 
 .status {
+  min-height: 120px;
   display: flex;
   align-items: center;
   gap: 18px;
@@ -173,6 +156,7 @@ header p,
   width: 54px;
   height: 54px;
   display: grid;
+  flex-shrink: 0;
   place-items: center;
   color: white;
   background: #20b77b;
@@ -194,6 +178,7 @@ header p,
 
 .status p {
   margin: 5px 0 0;
+  color: #71839c;
 }
 
 .status > strong {
@@ -246,13 +231,18 @@ header p,
   font-size: 17px;
 }
 
+.card > p {
+  color: #71839c;
+  font-size: 13px;
+}
+
 .row {
   min-height: 47px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #edf1f5;
+  justify-content: space-between;
   gap: 20px;
+  border-top: 1px solid #edf1f5;
 }
 
 .row span {
@@ -288,7 +278,7 @@ button:hover {
   font-size: 13px;
 }
 
-.bottom span {
+.bottom span:last-child {
   font-size: 10px;
   font-weight: bold;
   letter-spacing: 1px;
@@ -318,6 +308,7 @@ button:hover {
 
   aside {
     width: 100%;
+    min-height: auto;
     position: static;
   }
 
@@ -345,7 +336,7 @@ button:hover {
     display: block;
   }
 
-  .bottom span {
+  .bottom span:last-child {
     display: block;
     margin-top: 10px;
   }
