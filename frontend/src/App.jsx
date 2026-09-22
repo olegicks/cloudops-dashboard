@@ -2,68 +2,160 @@ import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
-  const [data, setData] = useState({ 
-    status: '🟡 CONNECTING...', 
-    uptime_seconds: 0, 
-    cpu_percent: 0, 
-    ram_mb: 0, 
+  const [data, setData] = useState({
+    status: 'CONNECTING...',
+    uptime_seconds: 0,
+    cpu_percent: 0,
+    ram_mb: 0,
     version: '...',
     hostname: '...',
     environment: '...'
   })
 
-  const API_URL = ""
-  
+  const API_URL = ''
+
   const fetchStatus = async () => {
     try {
       const response = await fetch(`${API_URL}/api/status`)
-      if (!response.ok) throw new Error("Server down")
+
+      if (!response.ok) {
+        throw new Error('Server unavailable')
+      }
+
       const result = await response.json()
       setData(result)
     } catch (error) {
-      setData(prev => ({ ...prev, status: '🔴 OFFLINE' }))
+      setData(prev => ({
+        ...prev,
+        status: 'OFFLINE'
+      }))
     }
   }
 
   useEffect(() => {
     fetchStatus()
+
     const interval = setInterval(fetchStatus, 3000)
+
     return () => clearInterval(interval)
   }, [])
 
   const simulateFailure = async () => {
+    setData(prev => ({
+      ...prev,
+      status: 'OFFLINE'
+    }))
+
     try {
-      setData(prev => ({ ...prev, status: '🔴 OFFLINE' }))
       await fetch(`${API_URL}/api/simulate-failure`, {
         method: 'POST'
       })
     } catch (error) {
-      console.log("Server killed successfully")
+      console.log('Server failure simulated')
     }
   }
 
-  return (
-    <div className="container">
-      <h1>CloudOps Dashboard</h1>
-      
-      <div className="dashboard-card">
-        <h2>System Status: 
-          <span className={data.status === 'ONLINE' ? 'text-green' : 'text-red'}>
-            {data.status === 'ONLINE' ? ' 🟢 ONLINE' : ` ${data.status}`}
-          </span>
-        </h2>
-        <p><strong>Environment:</strong> {data.environment}</p>
-        <p><strong>Hostname:</strong> {data.hostname}</p>
-        <p><strong>Version:</strong> {data.version}</p>
-        <p><strong>Uptime:</strong> {data.uptime_seconds} seconds</p>
-        <p><strong>CPU Load:</strong> {data.cpu_percent}%</p>
-        <p><strong>Memory Used:</strong> {data.ram_mb} MB</p>
-      </div>
+  const isOnline = data.status === 'ONLINE'
 
-      <button onClick={simulateFailure} className="kill-btn">
-        Simulate Failure 💀
-      </button>
-    </div>
+  return (
+    <main className="app">
+      <div className="dashboard">
+
+        <header className="header">
+          <div>
+            <p className="eyebrow">INFRASTRUCTURE MONITORING</p>
+            <h1>CloudOps Dashboard</h1>
+          </div>
+
+          <div className="live-indicator">
+            <span className="live-dot"></span>
+            LIVE
+          </div>
+        </header>
+
+        <section className="status-section">
+          <div className="status-header">
+            <span className="section-label">SYSTEM STATUS</span>
+
+            <div className={`status ${isOnline ? 'online' : 'offline'}`}>
+              <span className="status-dot"></span>
+              {data.status}
+            </div>
+          </div>
+
+          <div className="status-details">
+            <div className="info-block">
+              <span className="label">ENVIRONMENT</span>
+              <span className="value">{data.environment}</span>
+            </div>
+
+            <div className="info-block">
+              <span className="label">HOSTNAME</span>
+              <span className="value">{data.hostname}</span>
+            </div>
+
+            <div className="info-block">
+              <span className="label">VERSION</span>
+              <span className="value">{data.version}</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="metrics-section">
+          <div className="section-label">SYSTEM METRICS</div>
+
+          <div className="metrics-grid">
+
+            <div className="metric-card">
+              <span className="label">UPTIME</span>
+              <span className="metric-value">
+                {data.uptime_seconds}
+                <span className="metric-unit"> sec</span>
+              </span>
+            </div>
+
+            <div className="metric-card">
+              <span className="label">CPU LOAD</span>
+              <span className="metric-value">
+                {data.cpu_percent}
+                <span className="metric-unit"> %</span>
+              </span>
+            </div>
+
+            <div className="metric-card">
+              <span className="label">MEMORY USED</span>
+              <span className="metric-value">
+                {data.ram_mb}
+                <span className="metric-unit"> MB</span>
+              </span>
+            </div>
+
+          </div>
+        </section>
+
+        <section className="actions-section">
+          <div>
+            <div className="section-label">OPERATIONS</div>
+            <p className="action-description">
+              Trigger a controlled application failure to test automatic recovery.
+            </p>
+          </div>
+
+          <button
+            onClick={simulateFailure}
+            className="failure-button"
+          >
+            Simulate Failure
+          </button>
+        </section>
+
+        <footer className="footer">
+          <span>CloudOps</span>
+          <span>Monitoring & Recovery</span>
+        </footer>
+
+      </div>
+    </main>
   )
 }
 
