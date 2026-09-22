@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 import psutil
 import time
 import os
-import sys
 
 app = FastAPI()
 
@@ -16,7 +15,7 @@ app.add_middleware(
 )
 
 START_TIME = time.time()
-ADMIN_TOKEN = os.getenv("ADMIN_TOKEN", "demo-secret-123")
+ADMIN_TOKEN = "demo-secret-123"
 
 @app.get("/api/status")
 def get_status():
@@ -25,10 +24,11 @@ def get_status():
         "uptime_seconds": int(time.time() - START_TIME),
         "cpu_percent": psutil.cpu_percent(interval=0.1),
         "ram_mb": int(psutil.virtual_memory().used / (1024 * 1024)),
+        "version": "..."
     }
 
 @app.post("/api/simulate-failure")
 def simulate_failure(authorization: str = Header(None)):
     if authorization != f"Bearer {ADMIN_TOKEN}":
         raise HTTPException(status_code=401, detail="Unauthorized")
-    sys.exit(1)
+    os._exit(1)

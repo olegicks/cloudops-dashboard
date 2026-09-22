@@ -4,5 +4,3 @@ services:
     ports:
       - "80:8000"
     restart: unless-stopped
-    env_file:
-      - ./backend/.env
