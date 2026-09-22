@@ -33,7 +33,10 @@ function App() {
     try {
       setData(prev => ({ ...prev, status: '🔴 OFFLINE' }))
       await fetch(`${API_URL}/api/simulate-failure`, {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer demo-secret-123'
+        }
       })
     } catch (error) {
       console.log("Server killed successfully")
