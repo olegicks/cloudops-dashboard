@@ -1,11 +1,33 @@
 services:
   api:
     build: ./backend
+    container_name: cloudops_api
+
     ports:
-      - "80:8000"
+      - "8000:8000"
+
     restart: unless-stopped
+
+    environment:
+      APP_VERSION: ${APP_VERSION:-v1.1.0}
+      ENVIRONMENT: ${ENVIRONMENT:-Production}
+
+      CLOUD_PROVIDER: ${CLOUD_PROVIDER:-Microsoft Azure}
+      CLOUD_COMPUTE: ${CLOUD_COMPUTE:-Azure Virtual Machine}
+      CLOUD_REGION: ${CLOUD_REGION:-Austria East}
+
+      DEPLOY_COMMIT: ${DEPLOY_COMMIT:-local}
+      DEPLOY_TIME: ${DEPLOY_TIME:-unknown}
+
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
+        ]
       interval: 30s
-      timeout: 10s
+      timeout: 5s
       retries: 3
+      start_period: 10s
