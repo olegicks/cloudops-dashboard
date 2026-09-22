@@ -32,22 +32,12 @@ function App() {
 const simulateFailure = async () => {
     try {
       setData(prev => ({ ...prev, status: '🔴 OFFLINE' }))
-      const response = await fetch(`${API_URL}/api/simulate-failure`, {
+      await fetch(`${API_URL}/api/simulate-failure`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_DEMO_TOKEN}`
+          'Authorization': `Bearer ${import.meta.env.VITE_DEMO_TOKEN || 'my-secure-demo-2026'}`
         }
       })
-      
-      if (!response.ok) {
-        const token = prompt("Demo mode inactive. Enter Admin Token:");
-        if (token) {
-           await fetch(`${API_URL}/api/simulate-failure`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-        }
-      }
     } catch (error) {
       console.log("Server killed successfully")
     }
