@@ -7,7 +7,9 @@ function App() {
     uptime_seconds: 0, 
     cpu_percent: 0, 
     ram_mb: 0, 
-    version: '...' 
+    version: '...',
+    hostname: '...',
+    environment: '...'
   })
 
   const API_URL = ""
@@ -33,10 +35,7 @@ function App() {
     try {
       setData(prev => ({ ...prev, status: '🔴 OFFLINE' }))
       await fetch(`${API_URL}/api/simulate-failure`, {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer demo-secret-123'
-        }
+        method: 'POST'
       })
     } catch (error) {
       console.log("Server killed successfully")
@@ -53,6 +52,8 @@ function App() {
             {data.status === 'ONLINE' ? ' 🟢 ONLINE' : ` ${data.status}`}
           </span>
         </h2>
+        <p><strong>Environment:</strong> {data.environment}</p>
+        <p><strong>Hostname:</strong> {data.hostname}</p>
         <p><strong>Version:</strong> {data.version}</p>
         <p><strong>Uptime:</strong> {data.uptime_seconds} seconds</p>
         <p><strong>CPU Load:</strong> {data.cpu_percent}%</p>
